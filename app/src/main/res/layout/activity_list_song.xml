@@ -20,7 +20,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/tvTitle"
         android:background="#801d2735"
-        android:id="@+id/lvSong"></ListView>
+        android:id="@+id/lvSong"
+        android:choiceMode="singleChoice"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="horizontal"
-        android:background="#805c5b78">
+        android:background="#A65c5b78">
 
         <ImageView
             android:layout_width="wrap_content"

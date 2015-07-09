@@ -10,9 +10,9 @@
 
     <ImageView
         android:id="@+id/ivCamera"
+        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-         android:background="#ff0000"
         android:layout_margin="50dp"
         android:adjustViewBounds="true"
         android:src="@drawable/ic_camera" />

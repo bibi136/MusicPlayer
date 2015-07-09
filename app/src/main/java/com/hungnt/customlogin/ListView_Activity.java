@@ -57,19 +57,21 @@ public class ListView_Activity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-            TextView tvName;
+//            TextView tvName;
+            View view = convertView;
 
-            if (convertView == null) {
-                tvName = new TextView(ListView_Activity.this);
+            if (view == null) {
+//                tvName = new TextView(ListView_Activity.this);
+                view = getLayoutInflater().inflate(R.layout.layout_row,parent,false);
                 count++;
                 Log.i("List", "Khoi tao " + count);
             } else {
-                tvName = (TextView) convertView;
+                view =  convertView;
             }
 
-            tvName.setText(arrayStudent.get(position));
-            tvName.setPadding(30, 10, 10, 30);
-            return tvName;
+//            tvName.setText(arrayStudent.get(position));
+//            tvName.setPadding(30, 10, 10, 30);
+            return view;
         }
     }
 }

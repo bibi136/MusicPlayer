@@ -35,7 +35,8 @@
             android:layout_height="wrap_content"
             android:text="My love"
             android:layout_marginBottom="5dp"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:id="@+id/tvName" />
 
         <TextView
             android:layout_width="wrap_content"

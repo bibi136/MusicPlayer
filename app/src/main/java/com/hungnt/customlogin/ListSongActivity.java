@@ -10,27 +10,33 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.hungnt.customlogin.R.array.danhsach;
 
 
 public class ListSongActivity extends Activity {
 
-    private Context context;
     ListView lvSong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_list_song);
 
         lvSong = (ListView) findViewById(R.id.lvSong);
-
         ListSong listSong = new ListSong();
-        Log.i("oncreate","Tao listsong");
+        Log.i("oncreate", "Tao listsong");
 
         lvSong.setAdapter(listSong);
 
-        setContentView(R.layout.activity_list_song);
     }
 
     class ListSong extends BaseAdapter {
@@ -38,7 +44,7 @@ public class ListSongActivity extends Activity {
 
         @Override
         public int getCount() {
-            return 15;
+            return 20;
         }
 
         @Override
@@ -58,12 +64,10 @@ public class ListSongActivity extends Activity {
 
             if (view == null) {
                 Log.i("hung", "tao view");
-//                LayoutInflater inflater = (LayoutInflater)
-//                        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//                view = inflater.inflate(R.layout.layout_row, parent, false);
-                view = getLayoutInflater().inflate(R.layout.layout_row,parent,false);
+                view = getLayoutInflater().inflate(R.layout.layout_row, parent, false);
+            } else {
+                view = convertView;
             }
-
             return view;
         }
     }
