@@ -1,28 +1,15 @@
 package com.hungnt.customlogin;
 
 import android.app.Activity;
-import android.content.Context;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static com.hungnt.customlogin.R.array.danhsach;
 
 
-public class ListSongActivity extends Activity {
+public class ListSongActivity extends Activity implements AdapterView.OnItemClickListener {
 
     ListView lvSong;
 
@@ -33,9 +20,14 @@ public class ListSongActivity extends Activity {
 
         lvSong = (ListView) findViewById(R.id.lvSong);
         ListSong listSong = new ListSong();
-        Log.i("oncreate", "Tao listsong");
-
         lvSong.setAdapter(listSong);
+
+        lvSong.setOnItemClickListener(this);
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
 
@@ -63,7 +55,6 @@ public class ListSongActivity extends Activity {
             View view = convertView;
 
             if (view == null) {
-                Log.i("hung", "tao view");
                 view = getLayoutInflater().inflate(R.layout.layout_row, parent, false);
             } else {
                 view = convertView;
