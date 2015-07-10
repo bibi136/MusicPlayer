@@ -24,13 +24,13 @@ public class ListView_Activity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_view);
+//        setContentView(R.layout.activity_list_view);
+//
+//        count = 0;
+//        List<String> arrayString = Arrays.asList(getResources().getStringArray(R.array.danhsach));
+//        listView = (ListView) findViewById(R.id.arrayStudent);
 
-        count = 0;
-        List<String> arrayString = Arrays.asList(getResources().getStringArray(R.array.danhsach));
-        listView = (ListView) findViewById(R.id.arrayStudent);
-
-        arrayStudent = new ArrayList<String>(arrayString);
+//        arrayStudent = new ArrayList<String>(arrayString);
 
         //Khoi tao doi tuong
         StudentAdapter studentAdapter = new StudentAdapter();
@@ -57,21 +57,19 @@ public class ListView_Activity extends Activity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-//            TextView tvName;
-            View view = convertView;
+            TextView tvName;
 
-            if (view == null) {
-//                tvName = new TextView(ListView_Activity.this);
-                view = getLayoutInflater().inflate(R.layout.layout_row,parent,false);
+            if (convertView == null) {
+                tvName = new TextView(ListView_Activity.this);
                 count++;
                 Log.i("List", "Khoi tao " + count);
             } else {
-                view =  convertView;
+                tvName = (TextView) convertView;
             }
 
-//            tvName.setText(arrayStudent.get(position));
-//            tvName.setPadding(30, 10, 10, 30);
-            return view;
+            tvName.setText(arrayStudent.get(position));
+            tvName.setPadding(30, 10, 10, 30);
+            return tvName;
         }
     }
 }

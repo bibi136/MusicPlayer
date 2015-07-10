@@ -16,11 +16,11 @@
         android:textSize="20sp" />
 
     <ListView
+        android:id="@+id/lvSong"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvTitle"
         android:background="#801d2735"
-        android:id="@+id/lvSong"
         android:choiceMode="singleChoice"></ListView>
 
     <LinearLayout
@@ -28,16 +28,16 @@
         android:layout_height="47dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
+        android:background="#A65c5b78"
         android:gravity="center"
-        android:orientation="horizontal"
-        android:background="#A65c5b78">
+        android:orientation="horizontal">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="20dp"
-            android:src="@drawable/ic_cd_queue"
             android:layout_marginRight="7dp"
-            android:adjustViewBounds="true" />
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_cd_queue" />
 
         <TextView
             android:layout_width="wrap_content"
