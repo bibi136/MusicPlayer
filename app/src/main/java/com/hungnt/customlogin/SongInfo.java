@@ -9,13 +9,15 @@ public class SongInfo {
     private int liked;
     private int listened;
     private int downloaded;
+    private int cover;
 
-    public SongInfo(String name, String author, int liked, int listened, int downloaded) {
+    public SongInfo(String name, String author, int liked, int listened, int downloaded, int cover) {
         this.name = name;
         this.author = author;
         this.liked = liked;
         this.listened = listened;
         this.downloaded = downloaded;
+        this.cover = cover;
     }
 
     public SongInfo(String name, String author) {
@@ -24,6 +26,7 @@ public class SongInfo {
         liked = 0;
         listened = 0;
         downloaded = 0;
+        cover = R.drawable.artwork_glee;
     }
 
     public String getName() {
@@ -44,5 +47,9 @@ public class SongInfo {
 
     public int getDownloaded() {
         return downloaded;
+    }
+
+    public int getCover() {
+        return cover;
     }
 }

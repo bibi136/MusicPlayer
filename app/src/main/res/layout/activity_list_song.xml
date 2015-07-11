@@ -13,7 +13,8 @@
         android:gravity="center"
         android:text="English Songs"
         android:textColor="#ffffff"
-        android:textSize="20sp" />
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <ListView
         android:id="@+id/lvSong"
@@ -28,7 +29,7 @@
         android:layout_height="47dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:background="#A65c5b78"
+        android:background="#D95c5b78"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -45,6 +46,7 @@
             android:layout_gravity="center"
             android:text="15 songs in Queue"
             android:textColor="#ffffff"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:id="@+id/tvCount" />
     </LinearLayout>
 </RelativeLayout>
