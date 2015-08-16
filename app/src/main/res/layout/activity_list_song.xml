@@ -2,8 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/mainLayout"
     android:background="@drawable/bg_listsong_layout"
     android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
     tools:context=".MainActivity">
 
     <TextView
@@ -17,12 +19,14 @@
         android:textStyle="bold" />
 
     <ListView
+        android:descendantFocusability="blocksDescendants"
         android:id="@+id/lvSong"
+        android:divider="#80343434"
+        android:dividerHeight="2px"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvTitle"
-        android:background="#801d2735"
-        android:choiceMode="singleChoice"></ListView>
+        android:background="#801d2735" />
 
     <LinearLayout
         android:layout_width="match_parent"

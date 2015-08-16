@@ -1,78 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="96dp"
-    >
-
-    <!--<LinearLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:padding="10dp"-->
-        <!--android:orientation="horizontal">-->
+    android:layout_height="96dp">
 
     <ImageView
+        android:id="@+id/ivArtwork"
         android:layout_width="75dp"
         android:layout_height="75dp"
-        android:background="#eff0f4"
-        android:layout_marginLeft="10dp"
         android:layout_centerVertical="true"
         android:layout_marginBottom="5dp"
-        android:padding="2.5dp"
+        android:layout_marginLeft="10dp"
         android:adjustViewBounds="true"
-        android:src="@drawable/artwork_glee"
+        android:background="#eff0f4"
+        android:padding="2.5dp"
         android:scaleType="fitCenter"
-        android:id="@+id/ivArtwork" />
+        android:src="@drawable/artwork_glee" />
 
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:paddingLeft="7dp"
+        android:layout_above="@+id/textView"
         android:layout_marginLeft="8dp"
+        android:layout_toLeftOf="@+id/imageView"
+        android:layout_toRightOf="@+id/ivArtwork"
+        android:layout_toStartOf="@+id/imageView"
         android:gravity="center_vertical"
         android:orientation="vertical"
-        android:layout_above="@+id/textView"
-        android:layout_toRightOf="@+id/ivArtwork"
-        android:layout_toLeftOf="@+id/imageView"
-        android:layout_toStartOf="@+id/imageView">
+        android:paddingLeft="7dp">
 
         <TextView
+            android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My love"
             android:layout_marginBottom="5dp"
-            android:textColor="#ffffff"
-            android:id="@+id/tvName" />
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="My love"
+            android:textColor="#ffffff" />
 
         <TextView
+            android:id="@+id/tvAuthor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="by CamCam"
-            android:textSize="12sp"
             android:textColor="#ffffff"
-            android:id="@+id/tvAuthor" />
+            android:textSize="12sp" />
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
             android:background="#D9637689" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginRight="3dp"
             android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:gravity="center"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -81,22 +76,22 @@
                     android:src="@drawable/ic_like" />
 
                 <TextView
+                    android:id="@+id/tvLiked"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:textSize="12sp"
                     android:paddingLeft="6dp"
                     android:text="1202"
                     android:textColor="#e3e5e8"
-                    android:id="@+id/tvLiked" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -105,23 +100,22 @@
                     android:src="@drawable/ic_music" />
 
                 <TextView
+                    android:id="@+id/tvListened"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
                     android:paddingLeft="6dp"
                     android:text="1202"
-                    android:textSize="12sp"
                     android:textColor="#e3e5e8"
-                    android:id="@+id/tvListened" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
 
             <LinearLayout
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                >
+                android:gravity="center">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -130,15 +124,15 @@
                     android:src="@drawable/ic_download" />
 
                 <TextView
+                    android:id="@+id/tvDownloaded"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:inputType="number"
-                    android:textSize="12sp"
                     android:paddingLeft="6dp"
                     android:text="1202"
                     android:textColor="#e3e5e8"
-                    android:id="@+id/tvDownloaded" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
 
@@ -148,23 +142,20 @@
 
 
     <ImageView
-        android:background="#00000000"
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_heart"
-        android:id="@+id/imageView"
-        android:layout_marginTop="48dp"
         android:layout_alignParentRight="true"
-         />
-
-    <!--</LinearLayout>-->
+        android:layout_marginTop="48dp"
+        android:adjustViewBounds="true"
+        android:background="#00000000"
+        android:src="@drawable/ic_heart" />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="1.2dp"
         android:layout_alignParentBottom="true"
-        android:background="#99637689"
-        android:id="@+id/textView" />
+        android:background="#99637689" />
 
 </RelativeLayout>

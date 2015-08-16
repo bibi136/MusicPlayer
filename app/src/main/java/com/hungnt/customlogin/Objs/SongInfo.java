@@ -1,4 +1,6 @@
-package com.hungnt.customlogin;
+package com.hungnt.customlogin.Objs;
+
+import com.hungnt.customlogin.R;
 
 /**
  * Created by HungNT on 10/July/2015.

@@ -8,4 +8,7 @@
     <string name="title_activity_list_view">ListView</string>
     <string name="title_activity_list_song">English Songs</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
