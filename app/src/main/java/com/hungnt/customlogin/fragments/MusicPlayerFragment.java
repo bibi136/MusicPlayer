@@ -51,6 +51,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         v.findViewById(R.id.btn_next).setOnClickListener(this);
         v.findViewById(R.id.btn_back).setOnClickListener(this);
         v.findViewById(R.id.btn_playlist).setOnClickListener(this);
+        v.findViewById(R.id.music_layout).setOnClickListener(this);
 
 
         btn_play.setOnCheckedChangeListener(this);

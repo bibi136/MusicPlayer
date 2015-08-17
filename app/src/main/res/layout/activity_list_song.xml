@@ -1,39 +1,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainLayout"
     android:background="@drawable/bg_listsong_layout"
-    android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/tvTitle"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:gravity="center"
-        android:text="English Songs"
-        android:textColor="#ffffff"
-        android:textSize="17sp"
-        android:textStyle="bold" />
+    <!--<TextView-->
+    <!--android:id="@+id/tvTitle"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="60dp"-->
+    <!--android:gravity="center"-->
+    <!--android:text="English Songs"-->
+    <!--android:textColor="#ffffff"-->
+    <!--android:textSize="17sp"-->
+    <!--android:textStyle="bold" />-->
 
-    <ListView
-        android:descendantFocusability="blocksDescendants"
-        android:id="@+id/lvSong"
-        android:divider="#80343434"
-        android:dividerHeight="2px"
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:background="@drawable/background_tabs"
+        android:layout_height="48dip" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tvTitle"
+        android:layout_below="@+id/tabs"
         android:background="#801d2735" />
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="47dp"
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
-        android:background="#D95c5b78"
+        android:background="#CC5c5b78"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -45,12 +49,12 @@
             android:src="@drawable/ic_cd_queue" />
 
         <TextView
+            android:id="@+id/tvCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="15 songs in Queue"
             android:textColor="#ffffff"
-            android:textSize="12sp"
-            android:id="@+id/tvCount" />
+            android:textSize="12sp" />
     </LinearLayout>
 </RelativeLayout>

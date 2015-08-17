@@ -1,18 +1,23 @@
 package com.hungnt.customlogin;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
+import com.astuetz.PagerSlidingTabStrip;
 import com.hungnt.customlogin.Objs.SongInfo;
+import com.hungnt.customlogin.fragments.ListSongFragment;
 import com.hungnt.customlogin.fragments.MusicPlayerFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -25,32 +30,32 @@ public class ListSongActivity extends FragmentActivity implements AdapterView.On
     private static final String TAG = "hung";
     public ImageLoader imageLoader = ImageLoader.getInstance();
 
-    private ListView lvSong;
     public ArrayList<SongInfo> songs;
     private TextView tvCount;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_song);
-
         songs = new ArrayList<>();
-
         //Create song
         createSong();
+        imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
+
+        PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
+        tabs.setShouldExpand(true);
+        tabs.setIndicatorColor(0xFF3F9FE0);
+        tabs.setBackgroundColor(0xCC5c5b78);
+        tabs.setTextColor(0xffffffff);
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+        ListPagerAdapter pagerAdapter = new ListPagerAdapter(getSupportFragmentManager());
+
+        viewPager.setAdapter(pagerAdapter);
+        tabs.setViewPager(viewPager);
 
         tvCount = (TextView) findViewById(R.id.tvCount);
         tvCount.setText(songs.size() + " songs in Queue");
-
-        lvSong = (ListView) findViewById(R.id.lvSong);
-        ListSong listSong = new ListSong();
-        lvSong.setAdapter(listSong);
-
-        lvSong.setOnItemClickListener(this);
-
-        imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
-
 
     }
 
@@ -154,5 +159,31 @@ public class ListSongActivity extends FragmentActivity implements AdapterView.On
     static class ViewHolder {
         TextView tvName, tvAuthor, tvLiked, tvDownloaded, tvListened;
         ImageView ivArtwork;
+    }
+
+    private class ListPagerAdapter extends FragmentPagerAdapter {
+
+        private final String[] TITLES = {"SONGS", "ARTISTS", "ALBUMS",};
+
+        public ListPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return TITLES[position];
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            ListSongFragment listSongFragment = new ListSongFragment();
+            return listSongFragment;
+        }
+
+        @Override
+        public int getCount() {
+            return TITLES.length;
+        }
     }
 }
