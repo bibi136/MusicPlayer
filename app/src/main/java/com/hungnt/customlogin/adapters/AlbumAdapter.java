@@ -37,7 +37,6 @@ public class AlbumAdapter extends ArrayAdapter<AlbumInfo> {
         listSongs = objects;
         this.resource = resource;
 
-
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.img_artwork)
                 .showImageForEmptyUri(R.drawable.img_artwork)
@@ -51,23 +50,26 @@ public class AlbumAdapter extends ArrayAdapter<AlbumInfo> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        if (convertView == null) {
+        View view = convertView;
+        ViewHolder viewHolder;
+        if (view == null) {
             LayoutInflater inflater = mainActivity.getLayoutInflater();
-            convertView = inflater.inflate(resource, parent, false);
+            view = inflater.inflate(resource, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.tvName = (TextView) view.findViewById(R.id.tvName);
+            viewHolder.tvArtist = (TextView) view.findViewById(R.id.tvAuthor);
+            viewHolder.image = (ImageView) view.findViewById(R.id.ivArtwork);
+            view.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) view.getTag();
         }
 
-        TextView tv_song = (TextView) convertView.findViewById(R.id.tvName);
-        TextView tvAuthor = (TextView) convertView.findViewById(R.id.tvAuthor);
-        ImageView img_artwork = (ImageView) convertView.findViewById(R.id.ivArtwork);
-
-        tv_song.setText(listSongs.get(position).getAlbumName());
-        tvAuthor.setText(listSongs.get(position).getArtist());
+        viewHolder.tvName.setText(listSongs.get(position).getAlbumName());
+        viewHolder.tvArtist.setText(listSongs.get(position).getArtist());
         String url = mainActivity.songs.get(position).getCover();
-        if (url != null) {
-            mainActivity.imageLoader.displayImage("file://" + url, img_artwork, options, animateFirstListener);
-        }
+        mainActivity.imageLoader.displayImage("file://" + url, viewHolder.image, options, animateFirstListener);
 
-        return convertView;
+        return view;
     }
 
     public static class AnimateFirstDisplayListener extends SimpleImageLoadingListener {
@@ -85,5 +87,10 @@ public class AlbumAdapter extends ArrayAdapter<AlbumInfo> {
                 }
             }
         }
+    }
+
+    static class ViewHolder {
+        TextView tvName, tvArtist;
+        ImageView image;
     }
 }

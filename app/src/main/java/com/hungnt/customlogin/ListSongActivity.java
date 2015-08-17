@@ -76,12 +76,6 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
         tv_artist_playing_song = (TextView) findViewById(R.id.tv_artist_playing_song);
         layoutPlaying = findViewById(R.id.layout_playing);
         layoutPlaying.setOnClickListener(this);
-
-        if (MusicPlayerFragment.isPlaying) {
-            layoutPlaying.setVisibility(View.VISIBLE);
-        }
-
-
     }
 
     @Override
@@ -98,56 +92,6 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
         fragmentTransaction.replace(R.id.mainLayout, playerFragment).addToBackStack(null).commit();
     }
 
-    public void findAllMusic1() {
-        Cursor cursor, cursor2;
-        String[] STAR = {"*"};
-        Uri allsongsuri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Uri allalbumuri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
-        cursor = getApplicationContext().getContentResolver().query(
-                allsongsuri, STAR, selection, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                String cover = null;
-                do {
-                    int songAlbumID = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-                    cursor2 = getApplicationContext().getContentResolver()
-                            .query(allalbumuri, STAR, null, null, null);
-                    if (cursor2 != null) {
-                        if (cursor2.moveToFirst()) {
-                            do {
-                                int albumid = cursor2
-                                        .getInt(cursor2
-                                                .getColumnIndex(MediaStore.Audio.Albums._ID));
-                                if (albumid == songAlbumID) {
-                                    cover = cursor2
-                                            .getString(cursor2
-                                                    .getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
-                                }
-                            } while (cursor2.moveToNext());
-                        }
-                    }
-                    cursor2.close();
-                    SongInfo song = new SongInfo(
-                            cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)).split("\\.")[0],
-                            cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.DATA)),
-                            cover,
-                            cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST)),
-                            cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM)),
-                            cursor.getInt(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST_ID)),
-                            cursor.getInt(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
-                    songs.add(song);
-                } while (cursor.moveToNext());
-            }
-        }
-        cursor.close();
-    }
 
     public void findAllMusic(int filter, int id) {
         Cursor cursor, cursor2;
@@ -183,7 +127,7 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
                     cursor2.close();
                     SongInfo song = new SongInfo(
                             cursor.getString(cursor
-                                    .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),
+                                    .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)).split("\\.")[0],
                             cursor.getString(cursor
                                     .getColumnIndex(MediaStore.Audio.Media.DATA)),
                             cover,

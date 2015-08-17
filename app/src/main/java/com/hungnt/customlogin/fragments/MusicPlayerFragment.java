@@ -21,13 +21,11 @@ import com.hungnt.customlogin.R;
 import com.hungnt.customlogin.Services.MediaReciver;
 import com.hungnt.customlogin.Services.MediaService;
 import com.hungnt.customlogin.utils.CheckBoxImageView;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by HungNT on 17/August/2015.
- */
 public class MusicPlayerFragment extends Fragment implements View.OnClickListener, CheckBoxImageView.OnCheckedChangeListener {
 
     ListSongActivity mainActivity;
@@ -46,7 +44,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
             SET_REPEAT = 7, SEEK = 8;
     public static final String COMMAND = "command", RESPONE = "respone",
             TIME_RESPONE = "time", PLAY = "isPlaying", PAUSSE = "isPause",
-            REPEAT_STATUS = "repeat_stt", LIST_SONG = "list_song", SEEK_TO_TIME = "seek",
+            REPEAT_STATUS = "repeat_stt", LIST_SONG = "list_song", SEEK_TO_TIME = "seekk",
             VALUES = "values";
     public static final int COMPLETE = 0, TIME = 1, FTIME = 2, UPDATE = 3;
     private boolean isUpdated = false;
@@ -71,6 +69,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         Intent intent = new Intent(mainActivity, MediaService.class);
         intent.putExtra(COMMAND, UPDATE_STASTUS);
         mainActivity.startService(intent);
+
         btn_play = (CheckBoxImageView) v.findViewById(R.id.btn_play);
         btn_shuffle = (CheckBoxImageView) v.findViewById(R.id.btn_shuffle);
         btn_repeat = (CheckBoxImageView) v.findViewById(R.id.btn_repeat);
@@ -83,7 +82,6 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
 
         tvName.setText(mainActivity.songs.get(pos).getName());
         tvArtist.setText(mainActivity.songs.get(pos).getAuthor());
-        //Load image
         loadImage();
 
         v.findViewById(R.id.btn_prev).setOnClickListener(this);
@@ -91,28 +89,31 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         v.findViewById(R.id.btn_back).setOnClickListener(this);
         v.findViewById(R.id.btn_playlist).setOnClickListener(this);
         v.findViewById(R.id.music_layout).setOnClickListener(this);
+
         timeSeekbar = (SeekBar) v.findViewById(R.id.seek_bar);
+
         timeSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
                 if (isPlaying)
+                    Log.d(TAG, "onStopTrackingTouch ");
                     seekTime();
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
-                if (isPlaying)
-                    seekTime();
+//                if (isPlaying)
+//                    Log.d(TAG, "onStartTrackingTouch ");
+//                    seekTime();
             }
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (!isPlaying) {
-                    seekTime();
-                }
+//                if (!isPlaying && isFirstTimePressPlay) {
+//                    Log.d(TAG, "onProgressChanged ");
+//                    seekTime();
+//                }
             }
         });
 
@@ -148,7 +149,6 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                                                         .toSeconds(TimeUnit.MILLISECONDS
                                                                 .toMinutes((long) currentTime))));
                         timeSeekbar.setProgress((int) currentTime);
-
                         break;
                     case FTIME:
                         getFinalTime(intent);
@@ -192,57 +192,64 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         return v;
     }
 
-    @Override
-    public void onResume() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(RESPONE);
-        mainActivity.registerReceiver(receiver, intentFilter);
-        super.onResume();
-    }
+
 
     @Override
     public void onStart() {
 
-        super.onStart();
-
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(RESPONE);
+        mainActivity.registerReceiver(receiver, intentFilter);
         if (isPlay) {
             currentSong = pos;
             startMedia(mainActivity.songs.get(currentSong).getPath());
-        } else currentSong = pos;
-
+        }
+        super.onStart();
     }
 
     public void loadImage() {
-        String url = mainActivity.songs.get(pos).getCover();
-        if (url != null) {
-            mainActivity.imageLoader.displayImage("file://" + url, img_artwork);
-        }
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.img_artwork)
+                .showImageForEmptyUri(R.drawable.img_artwork)
+                .showImageOnFail(R.drawable.img_artwork)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .build();
+        String url = mainActivity.songs.get(currentSong).getCover();
+        mainActivity.imageLoader.displayImage("file://" + url, img_artwork, options);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_next:
-                //TODO add code here
                 currentSong++;
+                if (currentSong >= mainActivity.songs.size()) {
+                    currentSong = mainActivity.songs.size() - 1;
+                }
                 isFirstTimePressPlay = true;
-                Log.d(TAG, "onClick next" + currentSong);
                 startMedia(mainActivity.songs.get(currentSong).getPath());
                 tvName.setText(mainActivity.songs.get(currentSong).getName());
                 tvArtist.setText(mainActivity.songs.get(currentSong).getAuthor());
-
+                loadImage();
                 break;
             case R.id.btn_prev:
-                //TODO add code here
                 currentSong--;
+                if (currentSong < 0) {
+                    currentSong = 0;
+                }
                 isFirstTimePressPlay = true;
                 startMedia(mainActivity.songs.get(currentSong).getPath());
                 tvName.setText(mainActivity.songs.get(currentSong).getName());
                 tvArtist.setText(mainActivity.songs.get(currentSong).getAuthor());
+                loadImage();
                 Log.d(TAG, "onClick prev");
                 break;
             case R.id.btn_back:
+                mainActivity.setPos(currentSong);
+                mainActivity.tv_name_song_playing.setText(mainActivity.songs.get(currentSong).getName());
+                mainActivity.tv_artist_playing_song.setText(mainActivity.songs.get(currentSong).getAuthor());
                 mainActivity.getSupportFragmentManager().popBackStack();
                 break;
             case R.id.btn_playlist:
@@ -267,7 +274,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                 break;
             case R.id.btn_repeat:
                 if (!btn_repeat.isChecked()) {
-                    //TODO off repeat
+                    //off repeat
                     Log.d(TAG, "onCheckedChanged off");
                     Intent intent11 = new Intent(mainActivity, MediaService.class);
                     intent11.putExtra(COMMAND, SET_REPEAT);
@@ -276,7 +283,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
                     Toast.makeText(getActivity(), "No Repeat",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    //TODO on repeat
+                    // on repeat
                     Intent intent = new Intent(mainActivity, MediaService.class);
                     intent.putExtra(COMMAND, SET_REPEAT);
                     intent.putExtra(REPEAT_STATUS, 1);
@@ -344,7 +351,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
             btn_play.setChecked(false);
         }
         timeSeekbar.setProgress(0);
-        tvCurrentTime.setText("0:0");
+        tvCurrentTime.setText("00:00");
     }
 
     @Override
@@ -354,6 +361,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
     }
 
     public void seekTime() {
+        Log.d(TAG, "seekTime ");
         Intent intent = new Intent(mainActivity, MediaService.class);
         intent.putExtra(COMMAND, SEEK);
         intent.putExtra(SEEK_TO_TIME, timeSeekbar.getProgress());

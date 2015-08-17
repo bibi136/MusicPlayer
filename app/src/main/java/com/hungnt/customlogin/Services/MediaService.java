@@ -13,7 +13,6 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnSeekCompleteListener;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.hungnt.customlogin.fragments.MusicPlayerFragment;
@@ -54,11 +53,8 @@ public class MediaService extends Service implements OnPreparedListener,
                 mediaPlayer.start();
                 isPause = false;
                 break;
-            case MusicPlayerFragment.SEEK:
-                mediaPlayer.seekTo(intent.getExtras().getInt(MusicPlayerFragment.SEEK_TO_TIME));
-                break;
+
             case MusicPlayerFragment.START:
-                Log.d("START", "sdfasfasfasdf");
                 mediaPlayer.reset();
                 sntAudioLink = intent.getExtras().getString("url");
                 if (sntAudioLink != null && !sntAudioLink.isEmpty()) {
@@ -76,10 +72,10 @@ public class MediaService extends Service implements OnPreparedListener,
                 }
                 break;
             case MusicPlayerFragment.UPDATE_STASTUS:
-                Toast.makeText(this, "UPDATE", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "UPDATE", Toast.LENGTH_SHORT).show();
                 Intent intent1 = new Intent(MusicPlayerFragment.RESPONE);
                 intent1.putExtra(MusicPlayerFragment.REPEAT_STATUS, repeatStatus);
-                Toast.makeText(getApplicationContext(), "" + repeatStatus, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "" + repeatStatus, Toast.LENGTH_SHORT).show();
 //			intent.putStringArrayListExtra(MainActivity.LIST_SONG, listSong);
 //			intent.putStringArrayListExtra(MainActivity.VALUES, values);
                 intent1.putExtra(MusicPlayerFragment.PLAY, mediaPlayer.isPlaying());
@@ -98,6 +94,7 @@ public class MediaService extends Service implements OnPreparedListener,
 //			}
                 values = new ArrayList<String>(intent.getStringArrayListExtra(MusicPlayerFragment.VALUES));
                 break;
+
             case MusicPlayerFragment.STOP:
                 mediaPlayer.pause();
                 isPause = true;
@@ -111,6 +108,9 @@ public class MediaService extends Service implements OnPreparedListener,
                         .getInt(MusicPlayerFragment.REPEAT_STATUS);
                 Toast.makeText(getApplicationContext(), "" + repeatStatus, Toast.LENGTH_SHORT).show();
 
+                break;
+            case MusicPlayerFragment.SEEK:
+                mediaPlayer.seekTo(intent.getExtras().getInt(MusicPlayerFragment.SEEK_TO_TIME));
                 break;
             default:
                 break;
