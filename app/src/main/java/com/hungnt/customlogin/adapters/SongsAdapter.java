@@ -25,7 +25,6 @@ public class SongsAdapter extends ArrayAdapter<SongInfo> {
         this.mainActivity = context;
         this.resource = resource;
         this.listSongs = objects;
-
     }
 
     @Override

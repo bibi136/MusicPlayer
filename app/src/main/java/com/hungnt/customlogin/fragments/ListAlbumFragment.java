@@ -12,15 +12,15 @@ import android.widget.ListView;
 
 import com.hungnt.customlogin.ListSongActivity;
 import com.hungnt.customlogin.R;
-import com.hungnt.customlogin.adapters.SongsAdapter;
+import com.hungnt.customlogin.adapters.AlbumAdapter;
 
 
 /**
  * Created by HungNT on 17/August/2015.
  */
-public class ListSongFragment extends Fragment implements AdapterView.OnItemClickListener {
+public class ListAlbumFragment extends Fragment implements AdapterView.OnItemClickListener {
     ListView listView;
-    SongsAdapter songsAdapter;
+    AlbumAdapter adapter;
     ListSongActivity listSongActivity;
 
     @Override
@@ -29,8 +29,8 @@ public class ListSongFragment extends Fragment implements AdapterView.OnItemClic
         View v = inflater.inflate(R.layout.frag_list_songs, container, false);
         listView = (ListView) v.findViewById(R.id.lvSong);
 
-        songsAdapter = new SongsAdapter(listSongActivity, R.layout.item_listview_song, listSongActivity.songs);
-        listView.setAdapter(songsAdapter);
+        adapter = new AlbumAdapter(listSongActivity, R.layout.item_list_album, listSongActivity.songs);
+        listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(this);
 
@@ -45,8 +45,6 @@ public class ListSongFragment extends Fragment implements AdapterView.OnItemClic
         listSongActivity.layoutPlaying.setVisibility(View.VISIBLE);
         listSongActivity.tv_name_song_playing.setText(listSongActivity.songs.get(position).getName());
         listSongActivity.tv_artist_playing_song.setText(listSongActivity.songs.get(position).getAuthor());
-        listSongActivity.setPos(position);
-        listSongActivity.setIsPlaying(true);
 
         Bundle bundle = new Bundle();
         bundle.putInt("pos", position);
@@ -57,6 +55,10 @@ public class ListSongFragment extends Fragment implements AdapterView.OnItemClic
         FragmentTransaction fragmentTransaction = listSongActivity.getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.replace(R.id.mainLayout, playerFragment).addToBackStack(null).commit();
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

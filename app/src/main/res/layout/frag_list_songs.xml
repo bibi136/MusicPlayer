@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#801d2735"
-        android:divider="#80343434"
-        android:dividerHeight="2px" />
+        android:divider="#80ffffff"
+        android:dividerHeight="1dp" />
 
 </LinearLayout>

@@ -44,7 +44,6 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
 
         tvName.setText(mainActivity.songs.get(pos).getName());
         tvArtist.setText(mainActivity.songs.get(pos).getAuthor());
-//        img_artwork.setImageResource(mainActivity.songs.get(pos).getCover());
         loadImage();
 
         v.findViewById(R.id.btn_prev).setOnClickListener(this);
@@ -58,6 +57,7 @@ public class MusicPlayerFragment extends Fragment implements View.OnClickListene
         btn_shuffle.setOnCheckedChangeListener(this);
         btn_repeat.setOnCheckedChangeListener(this);
 
+        btn_play.setChecked(true);
 
         return v;
     }

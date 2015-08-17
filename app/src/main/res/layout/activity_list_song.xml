@@ -3,25 +3,27 @@
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_listsong_layout"
+    android:background="#cc000000"
     android:descendantFocusability="blocksDescendants"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <!--<TextView-->
-    <!--android:id="@+id/tvTitle"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="60dp"-->
-    <!--android:gravity="center"-->
-    <!--android:text="English Songs"-->
-    <!--android:textColor="#ffffff"-->
-    <!--android:textSize="17sp"-->
-    <!--android:textStyle="bold" />-->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#4a2a71"
+        android:gravity="bottom|center"
+        android:text="My Music"
+        android:textColor="#ffffff"
+        android:textSize="17sp"
+        android:textStyle="bold" />
 
     <com.astuetz.PagerSlidingTabStrip
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="48dip"
+        android:layout_below="@+id/tvTitle"
         android:background="@drawable/background_tabs" />
 
     <android.support.v4.view.ViewPager
@@ -29,8 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layout_playing"
-        android:layout_below="@+id/tabs"
-        android:background="#801d2735" />
+        android:layout_below="@+id/tabs" />
 
     <LinearLayout
         android:id="@+id/layout_playing"

@@ -1,7 +1,5 @@
 package com.hungnt.customlogin.Objs;
 
-import com.hungnt.customlogin.R;
-
 /**
  * Created by HungNT on 10/July/2015.
  */
@@ -28,7 +26,6 @@ public class SongInfo {
         liked = 0;
         listened = 0;
         downloaded = 0;
-        cover = R.drawable.artwork_glee;
     }
 
     public String getName() {
