@@ -1,6 +1,9 @@
 package com.hungnt.customlogin;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.hungnt.customlogin.Objs.AlbumInfo;
 import com.hungnt.customlogin.Objs.SongInfo;
 import com.hungnt.customlogin.fragments.ListAlbumFragment;
 import com.hungnt.customlogin.fragments.ListSongFragment;
@@ -29,9 +33,12 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
     private int pos = 0;
 
     public ArrayList<SongInfo> songs;
+    public ArrayList<AlbumInfo> albums = new ArrayList<>();
     public TextView tv_name_song_playing, tv_artist_playing_song;
     private ViewPager viewPager;
     public View layoutPlaying;
+    private Cursor cursor;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +46,17 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
         setContentView(R.layout.activity_list_song);
         songs = new ArrayList<>();
 
+        findAllMusic(0, 0);
+
+        Thread thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                findAllAlbum();
+            }
+        });
+        thread1.start();
+
         //Create song
-        createSong();
         imageLoader.init(ImageLoaderConfiguration.createDefault(getBaseContext()));
 
         PagerSlidingTabStrip tabs = (PagerSlidingTabStrip) findViewById(R.id.tabs);
@@ -60,22 +76,170 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
         tv_artist_playing_song = (TextView) findViewById(R.id.tv_artist_playing_song);
         layoutPlaying = findViewById(R.id.layout_playing);
         layoutPlaying.setOnClickListener(this);
+
+        if (MusicPlayerFragment.isPlaying) {
+            layoutPlaying.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     @Override
     public void onClick(View v) {
-        if (isPlaying) {
-            Bundle bundle = new Bundle();
-            bundle.putInt("pos", pos);
+        Bundle bundle = new Bundle();
+        bundle.putInt("pos", pos);
+        bundle.putBoolean("play", false);
 
-            MusicPlayerFragment playerFragment = new MusicPlayerFragment();
-            playerFragment.setArguments(bundle);
+        MusicPlayerFragment playerFragment = new MusicPlayerFragment();
+        playerFragment.setArguments(bundle);
 
-            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-            fragmentTransaction.replace(R.id.mainLayout, playerFragment).addToBackStack(null).commit();
-        }
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        fragmentTransaction.replace(R.id.mainLayout, playerFragment).addToBackStack(null).commit();
     }
+
+    public void findAllMusic1() {
+        Cursor cursor, cursor2;
+        String[] STAR = {"*"};
+        Uri allsongsuri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Uri allalbumuri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+        cursor = getApplicationContext().getContentResolver().query(
+                allsongsuri, STAR, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String cover = null;
+                do {
+                    int songAlbumID = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                    cursor2 = getApplicationContext().getContentResolver()
+                            .query(allalbumuri, STAR, null, null, null);
+                    if (cursor2 != null) {
+                        if (cursor2.moveToFirst()) {
+                            do {
+                                int albumid = cursor2
+                                        .getInt(cursor2
+                                                .getColumnIndex(MediaStore.Audio.Albums._ID));
+                                if (albumid == songAlbumID) {
+                                    cover = cursor2
+                                            .getString(cursor2
+                                                    .getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+                                }
+                            } while (cursor2.moveToNext());
+                        }
+                    }
+                    cursor2.close();
+                    SongInfo song = new SongInfo(
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)).split("\\.")[0],
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.DATA)),
+                            cover,
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                            cursor.getInt(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST_ID)),
+                            cursor.getInt(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+                    songs.add(song);
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+    }
+
+    public void findAllMusic(int filter, int id) {
+        Cursor cursor, cursor2;
+        String[] STAR = {"*"};
+        Uri allsongsuri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        Uri allalbumuri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Media.IS_MUSIC + " != 0";
+        songs.clear();
+        cursor = getApplicationContext().getContentResolver().query(
+                allsongsuri, STAR, selection, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                String cover = null;
+                do {
+                    int songAlbumID = cursor.getInt(cursor
+                            .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
+                    cursor2 = getApplicationContext().getContentResolver()
+                            .query(allalbumuri, STAR, null, null, null);
+                    if (cursor2 != null) {
+                        if (cursor2.moveToFirst()) {
+                            do {
+                                int albumid = cursor2
+                                        .getInt(cursor2
+                                                .getColumnIndex(MediaStore.Audio.Albums._ID));
+                                if (albumid == songAlbumID) {
+                                    cover = cursor2
+                                            .getString(cursor2
+                                                    .getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+                                }
+                            } while (cursor2.moveToNext());
+                        }
+                    }
+                    cursor2.close();
+                    SongInfo song = new SongInfo(
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)),
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.DATA)),
+                            cover,
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                            cursor.getInt(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST_ID)),
+                            cursor.getInt(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID)));
+                    switch (filter) {
+                        case 1:/* loc theo album */
+                            if (song.getIdAlbum() == id) {
+                                songs.add(song);
+                            }
+                            break;
+                        case 2:/* loc theo Artist */
+                            if (song.getIdArtist() == id) {
+                                songs.add(song);
+                            }
+                            break;
+                        default:
+                            songs.add(song);
+                            break;
+                    }
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+    }
+
+    public void findAllAlbum() {
+        String[] STAR = {"*"};
+        Uri allsongsuri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        cursor = getApplicationContext().getContentResolver().query(
+                allsongsuri, STAR, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    AlbumInfo album = new AlbumInfo(
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Albums.ALBUM)),
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART)),
+                            cursor.getString(cursor
+                                    .getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                            cursor.getInt(cursor
+                                    .getColumnIndex(MediaStore.Audio.Albums._ID)));
+                    albums.add(album);
+                } while (cursor.moveToNext());
+            }
+        }
+        cursor.close();
+    }
+
 
     private class ListPagerAdapter extends FragmentPagerAdapter {
 
@@ -123,53 +287,6 @@ public class ListSongActivity extends FragmentActivity implements View.OnClickLi
 
     public void setIsPlaying(boolean isPlaying) {
         this.isPlaying = isPlaying;
-    }
-
-    private void createSong() {
-        songs.add(new SongInfo("See You Again", "Wizkalifa", 444, 2321, 12313, R.drawable.artwork_native));
-        songs.add(new SongInfo("Chandelier", "Sia", 44, 55, 33, R.drawable.artwork_yearendhot));
-        songs.add(new SongInfo("Will It Rain", "Bruno Mars,", 1234, 4566, 23422, R.drawable.artwork_hooligans));
-        songs.add(new SongInfo("Good For You", "Selena", 123, 434, 1123, R.drawable.artwork_maron5));
-        songs.add(new SongInfo("Imagine", "Elton John", 1123, 4342, 1215, R.drawable.artwork_fifty));
-        songs.add(new SongInfo("Rocket Man", "John Lennon"));
-        songs.add(new SongInfo("Moonlight Mile", "Rolling Stones", 1122, 3332, 2233, R.drawable.artwork_hotel));
-        songs.add(new SongInfo("American Pie", "Don McLean"));
-        songs.add(new SongInfo("Your Song", "Elton John", 1, 43, 555, R.drawable.artwork_rockstar));
-        songs.add(new SongInfo("Everyday People", "Sly & The Family Stone"));
-        songs.add(new SongInfo("Space Oddity", "David Bowie", 2311, 4443, 235, R.drawable.artwork_yeu));
-        songs.add(new SongInfo("See You Again", "Wizkalifa", 444, 2321, 12313, R.drawable.artwork_native));
-        songs.add(new SongInfo("Chandelier", "Sia", 44, 55, 33, R.drawable.artwork_yearendhot));
-        songs.add(new SongInfo("Will It Rain", "Bruno Mars,", 1234, 4566, 23422, R.drawable.artwork_hooligans));
-        songs.add(new SongInfo("Good For You", "Selena", 123, 434, 1123, R.drawable.artwork_maron5));
-        songs.add(new SongInfo("Imagine", "Elton John", 1123, 4342, 1215, R.drawable.artwork_fifty));
-        songs.add(new SongInfo("Rocket Man", "John Lennon"));
-        songs.add(new SongInfo("Moonlight Mile", "Rolling Stones", 1122, 3332, 2233, R.drawable.artwork_hotel));
-        songs.add(new SongInfo("American Pie", "Don McLean"));
-        songs.add(new SongInfo("Your Song", "Elton John", 1, 43, 555, R.drawable.artwork_rockstar));
-        songs.add(new SongInfo("Everyday People", "Sly & The Family Stone"));
-        songs.add(new SongInfo("Space Oddity", "David Bowie", 2311, 4443, 235, R.drawable.artwork_yeu));
-        songs.add(new SongInfo("See You Again", "Wizkalifa", 444, 2321, 12313, R.drawable.artwork_native));
-        songs.add(new SongInfo("Chandelier", "Sia", 44, 55, 33, R.drawable.artwork_yearendhot));
-        songs.add(new SongInfo("Will It Rain", "Bruno Mars,", 1234, 4566, 23422, R.drawable.artwork_hooligans));
-        songs.add(new SongInfo("Good For You", "Selena", 123, 434, 1123, R.drawable.artwork_maron5));
-        songs.add(new SongInfo("Imagine", "Elton John", 1123, 4342, 1215, R.drawable.artwork_fifty));
-        songs.add(new SongInfo("Rocket Man", "John Lennon"));
-        songs.add(new SongInfo("Moonlight Mile", "Rolling Stones", 1122, 3332, 2233, R.drawable.artwork_hotel));
-        songs.add(new SongInfo("American Pie", "Don McLean"));
-        songs.add(new SongInfo("Your Song", "Elton John", 1, 43, 555, R.drawable.artwork_rockstar));
-        songs.add(new SongInfo("Everyday People", "Sly & The Family Stone"));
-        songs.add(new SongInfo("Space Oddity", "David Bowie", 2311, 4443, 235, R.drawable.artwork_yeu));
-        songs.add(new SongInfo("See You Again", "Wizkalifa", 444, 2321, 12313, R.drawable.artwork_native));
-        songs.add(new SongInfo("Chandelier", "Sia", 44, 55, 33, R.drawable.artwork_yearendhot));
-        songs.add(new SongInfo("Will It Rain", "Bruno Mars,", 1234, 4566, 23422, R.drawable.artwork_hooligans));
-        songs.add(new SongInfo("Good For You", "Selena", 123, 434, 1123, R.drawable.artwork_maron5));
-        songs.add(new SongInfo("Imagine", "Elton John", 1123, 4342, 1215, R.drawable.artwork_fifty));
-        songs.add(new SongInfo("Rocket Man", "John Lennon"));
-        songs.add(new SongInfo("Moonlight Mile", "Rolling Stones", 1122, 3332, 2233, R.drawable.artwork_hotel));
-        songs.add(new SongInfo("American Pie", "Don McLean"));
-        songs.add(new SongInfo("Your Song", "Elton John", 1, 43, 555, R.drawable.artwork_rockstar));
-        songs.add(new SongInfo("Everyday People", "Sly & The Family Stone"));
-        songs.add(new SongInfo("Space Oddity", "David Bowie", 2311, 4443, 235, R.drawable.artwork_yeu));
     }
 
 }

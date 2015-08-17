@@ -92,7 +92,9 @@
                 android:minHeight="5dip"
                 android:progressDrawable="@drawable/progress_style"
                 android:thumb="@drawable/thumb_image"
-                android:thumbOffset="5dp" />
+                android:thumbOffset="5dp"
+                android:indeterminate="false"
+                android:id="@+id/seek_bar" />
 
             <TextView
                 android:id="@+id/tv_curr_time"

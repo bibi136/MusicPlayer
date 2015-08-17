@@ -6,49 +6,63 @@ package com.hungnt.customlogin.Objs;
 public class SongInfo {
     private String name;
     private String author;
-    private int liked;
-    private int listened;
-    private int downloaded;
-    private int cover;
+    private String path;
+    private int idAlbum;
+    private int idArtist;
+    private String albums;
+    private String cover;
 
-    public SongInfo(String name, String author, int liked, int listened, int downloaded, int cover) {
-        this.name = name;
+    public SongInfo(String name, String path, String cover, String author, String albums, int idAlbum, int idArtist) {
         this.author = author;
-        this.liked = liked;
-        this.listened = listened;
-        this.downloaded = downloaded;
+        this.idAlbum = idAlbum;
+        this.albums = albums;
+        this.idArtist = idArtist;
         this.cover = cover;
-    }
-
-    public SongInfo(String name, String author) {
         this.name = name;
-        this.author = author;
-        liked = 0;
-        listened = 0;
-        downloaded = 0;
+        this.path = path;
     }
 
-    public String getName() {
-        return name;
+    public String getAlbums() {
+        return albums;
+    }
+
+    public int getIdAlbum() {
+        return idAlbum;
+    }
+
+    public int getIdArtist() {
+        return idArtist;
     }
 
     public String getAuthor() {
         return author;
     }
 
-    public int getLiked() {
-        return liked;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
-    public int getListened() {
-        return listened;
-    }
-
-    public int getDownloaded() {
-        return downloaded;
-    }
-
-    public int getCover() {
+    public String getCover() {
         return cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 }

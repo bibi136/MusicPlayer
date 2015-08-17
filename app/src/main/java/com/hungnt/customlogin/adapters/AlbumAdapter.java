@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hungnt.customlogin.ListSongActivity;
-import com.hungnt.customlogin.Objs.SongInfo;
+import com.hungnt.customlogin.Objs.AlbumInfo;
 import com.hungnt.customlogin.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
@@ -24,18 +24,19 @@ import java.util.List;
 /**
  * Created by Hoang on 8/12/2015.
  */
-public class AlbumAdapter extends ArrayAdapter<SongInfo> {
+public class AlbumAdapter extends ArrayAdapter<AlbumInfo> {
     private ListSongActivity mainActivity;
     private int resource;
-    private ArrayList<SongInfo> listSongs;
+    private ArrayList<AlbumInfo> listSongs;
     private DisplayImageOptions options;
     private ImageLoadingListener animateFirstListener = new AnimateFirstDisplayListener();
 
-    public AlbumAdapter(ListSongActivity context, int resource, ArrayList<SongInfo> objects) {
+    public AlbumAdapter(ListSongActivity context, int resource, ArrayList<AlbumInfo> objects) {
         super(context, resource, objects);
-        this.mainActivity = context;
+        mainActivity = context;
+        listSongs = objects;
         this.resource = resource;
-        this.listSongs = objects;
+
 
         options = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.img_artwork)
@@ -46,6 +47,7 @@ public class AlbumAdapter extends ArrayAdapter<SongInfo> {
                 .considerExifParams(true)
                 .build();
     }
+
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -58,9 +60,12 @@ public class AlbumAdapter extends ArrayAdapter<SongInfo> {
         TextView tvAuthor = (TextView) convertView.findViewById(R.id.tvAuthor);
         ImageView img_artwork = (ImageView) convertView.findViewById(R.id.ivArtwork);
 
-        tv_song.setText(listSongs.get(position).getName());
-        tvAuthor.setText(listSongs.get(position).getAuthor());
-        mainActivity.imageLoader.displayImage("drawable://" + mainActivity.songs.get(position).getCover(), img_artwork, options, animateFirstListener);
+        tv_song.setText(listSongs.get(position).getAlbumName());
+        tvAuthor.setText(listSongs.get(position).getArtist());
+        String url = mainActivity.songs.get(position).getCover();
+        if (url != null) {
+            mainActivity.imageLoader.displayImage("file://" + url, img_artwork, options, animateFirstListener);
+        }
 
         return convertView;
     }

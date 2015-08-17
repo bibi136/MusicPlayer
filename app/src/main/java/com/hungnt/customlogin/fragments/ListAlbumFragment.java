@@ -29,7 +29,7 @@ public class ListAlbumFragment extends Fragment implements AdapterView.OnItemCli
         View v = inflater.inflate(R.layout.frag_list_songs, container, false);
         listView = (ListView) v.findViewById(R.id.lvSong);
 
-        adapter = new AlbumAdapter(listSongActivity, R.layout.item_list_album, listSongActivity.songs);
+        adapter = new AlbumAdapter(listSongActivity, R.layout.item_list_album, listSongActivity.albums);
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(this);

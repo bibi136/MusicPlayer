@@ -46,10 +46,11 @@ public class ListSongFragment extends Fragment implements AdapterView.OnItemClic
         listSongActivity.tv_name_song_playing.setText(listSongActivity.songs.get(position).getName());
         listSongActivity.tv_artist_playing_song.setText(listSongActivity.songs.get(position).getAuthor());
         listSongActivity.setPos(position);
-        listSongActivity.setIsPlaying(true);
+        MusicPlayerFragment.isPlaying = true;
 
         Bundle bundle = new Bundle();
         bundle.putInt("pos", position);
+        bundle.putBoolean("play", true);
 
         MusicPlayerFragment playerFragment = new MusicPlayerFragment();
         playerFragment.setArguments(bundle);
