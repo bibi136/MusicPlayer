@@ -31,8 +31,9 @@ public class ListSongActivity extends FragmentActivity implements AdapterView.On
     public ImageLoader imageLoader = ImageLoader.getInstance();
 
     public ArrayList<SongInfo> songs;
-    private TextView tvCount;
+    public TextView tv_name_song_playing, tv_artist_playing_song;
     private ViewPager viewPager;
+    public View layoutPlaying;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,10 @@ public class ListSongActivity extends FragmentActivity implements AdapterView.On
         viewPager.setAdapter(pagerAdapter);
         tabs.setViewPager(viewPager);
 
-        tvCount = (TextView) findViewById(R.id.tvCount);
-        tvCount.setText(songs.size() + " songs in Queue");
+        tv_name_song_playing = (TextView) findViewById(R.id.tv_name_playing_song);
+        tv_artist_playing_song = (TextView) findViewById(R.id.tv_artist_playing_song);
+        layoutPlaying = findViewById(R.id.layout_playing);
+
 
     }
 
@@ -83,6 +86,10 @@ public class ListSongActivity extends FragmentActivity implements AdapterView.On
         //TODO bat su kien play nhac khi chon 1 bai hat
         Log.d(TAG, "onItemClick ");
 
+        layoutPlaying.setVisibility(View.VISIBLE);
+        tv_name_song_playing.setText(songs.get(position).getName());
+        tv_artist_playing_song.setText(songs.get(position).getAuthor());
+
         Bundle bundle = new Bundle();
         bundle.putInt("pos", position);
 
@@ -92,6 +99,7 @@ public class ListSongActivity extends FragmentActivity implements AdapterView.On
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.replace(R.id.mainLayout, playerFragment).addToBackStack(null).commit();
+
 
     }
 

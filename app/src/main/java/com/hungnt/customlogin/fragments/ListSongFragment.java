@@ -42,6 +42,10 @@ public class ListSongFragment extends Fragment implements AdapterView.OnItemClic
         //TODO bat su kien play nhac khi chon 1 bai hat
         Log.d("hung", "onItemClick ");
 
+        listSongActivity.layoutPlaying.setVisibility(View.VISIBLE);
+        listSongActivity.tv_name_song_playing.setText(listSongActivity.songs.get(position).getName());
+        listSongActivity.tv_artist_playing_song.setText(listSongActivity.songs.get(position).getAuthor());
+
         Bundle bundle = new Bundle();
         bundle.putInt("pos", position);
 

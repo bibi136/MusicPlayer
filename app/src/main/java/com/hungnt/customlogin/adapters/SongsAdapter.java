@@ -4,9 +4,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.hungnt.customlogin.ListSongActivity;
 import com.hungnt.customlogin.Objs.SongInfo;
+import com.hungnt.customlogin.R;
 
 import java.util.ArrayList;
 
@@ -33,6 +35,11 @@ public class SongsAdapter extends ArrayAdapter<SongInfo> {
             convertView = inflater.inflate(resource, parent, false);
         }
 
+        TextView tv_song = (TextView) convertView.findViewById(R.id.tvName);
+        TextView tvAuthor = (TextView) convertView.findViewById(R.id.tvAuthor);
+
+        tv_song.setText(listSongs.get(position).getName());
+        tvAuthor.setText(listSongs.get(position).getAuthor());
 
         return convertView;
     }
